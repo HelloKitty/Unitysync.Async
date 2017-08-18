@@ -10,12 +10,12 @@ The way this works is it starts a coroutine on the current Monobehaviour, using 
 
 ```csharp
 Service.DoSomethingASync(someData, someMoreData)
-				.UnityAsyncContinueWith(this, LogAndDipatchResult);
+	.UnityAsyncContinueWith(this, LogAndDipatchResult);
 ```
 
 ```csharp
 Service.DoSomethingASync(someData, someMoreData)
-				.UnityAsyncContinueWith(this, result => SomeEntity.SetResult(result.Something));
+	.UnityAsyncContinueWith(this, result => SomeEntity.SetResult(result.Something));
 ```
 
 You can schedule multiple continuations on a single Task but the order of their execution is currently undefined if you schedule multiple on the same task.
