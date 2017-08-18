@@ -9,12 +9,12 @@ If you have an async method that returns a Task or Task<T> then you can register
 The way this works is it starts a coroutine on the current Monobehaviour, using the Monobehaviour as a context for the continuation, and fires off the delegate once the async method has completed and the Task completition state is complete.
 
 ```csharp
-Service.DoSomethingASync(someData, someMoreData)
+Service.DoSomethingAsync(someData, someMoreData)
 	.UnityAsyncContinueWith(this, LogAndDipatchResult);
 ```
 
 ```csharp
-Service.DoSomethingASync(someData, someMoreData)
+Service.DoSomethingAsync(someData, someMoreData)
 	.UnityAsyncContinueWith(this, result => SomeEntity.SetResult(result.Something));
 ```
 
