@@ -1,6 +1,6 @@
-# Unisync.Async
+# Unitysync.Async
 
-Unisync.Async is an async extension library that allows you to use Task and Task<T> with continuations in Unity3D.
+Unitysync.Async is an async extension library that allows you to use Task and Task<T> with continuations in Unity3D.
 
 ## How to Use
 
@@ -31,7 +31,7 @@ To compile or open TypeSafe.Http.Net project you'll first need a couple of thing
 
 ## Builds
 
-NuGet: [Unisync.Async](https://www.nuget.org/packages/Unisync.Async/)
+NuGet: [Unitysync.Async](https://www.nuget.org/packages/Unitysync.Async/)
 
 Myget: [![hellokitty MyGet Build Status](https://www.myget.org/BuildSource/Badge/hellokitty?identifier=f89338ba-bf06-478a-9131-ab52b4855aa5)](https://www.myget.org/)
 
