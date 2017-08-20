@@ -14,8 +14,26 @@ namespace Unitysync.Async
 
 			yield return new WaitForFuture(future);
 
+			ThrowIfIsCanceledOrErrored(future);
+
 			//Result will throw if we encounted exceptions but it will be aggregate exception
 			continuation(future.Result);
+		}
+
+		/// <summary>
+		/// Throws exceptions if the task is canceled or errored.
+		/// </summary>
+		/// <param name="future">The future to check.</param>
+		private static void ThrowIfIsCanceledOrErrored(Task future)
+		{
+			if(future.IsCanceled)
+				throw new TaskCanceledException(future);
+
+			if (future.IsFaulted)
+				if(future.Exception != null)
+					throw future.Exception;
+				else
+					throw new InvalidOperationException($"Task: {future} failed to complete execution.");
 		}
 
 		//You may wonder why this overload exists. It's for efficiency reasons so we don't need to wrap the a single continuation
@@ -28,11 +46,13 @@ namespace Unitysync.Async
 
 			yield return new WaitForFuture(future);
 
+			ThrowIfIsCanceledOrErrored(future);
+
 			//Result will throw if we encounted exceptions but it will be aggregate exception
 			//We call the first continuation
 			continuation(future.Result);
 
-			 continuations.DispatchContinuations(future.Result);
+			continuations.DispatchContinuations(future.Result);
 		}
 
 		public static IEnumerator UnityAsyncCoroutine(this Task future, Action continuation)
@@ -56,6 +76,8 @@ namespace Unitysync.Async
 
 			yield return new WaitForFuture(future);
 
+			ThrowIfIsCanceledOrErrored(future);
+
 			//Result will throw if we encounted exceptions but it will be aggregate exception
 			//We call the first continuation
 			continuation();
@@ -69,6 +91,8 @@ namespace Unitysync.Async
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
 
 			yield return new WaitForFuture(future);
+
+			ThrowIfIsCanceledOrErrored(future);
 
 			Task<TResult> resultValue;
 			try
@@ -85,6 +109,8 @@ namespace Unitysync.Async
 			//Now unlike the non task func we must wait for the new task to finish before we set its completion source
 			yield return new WaitForFuture(resultValue);
 
+			ThrowIfIsCanceledOrErrored(resultValue);
+
 			result.SetResult(resultValue.Result);
 		}
 
@@ -94,6 +120,8 @@ namespace Unitysync.Async
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
 
 			yield return new WaitForFuture(future);
+
+			ThrowIfIsCanceledOrErrored(future);
 
 			TResult resultValue;
 			try
@@ -117,6 +145,8 @@ namespace Unitysync.Async
 
 			yield return new WaitForFuture(future);
 
+			ThrowIfIsCanceledOrErrored(future);
+
 			Task<TResult> resultValue;
 			try
 			{
@@ -132,6 +162,8 @@ namespace Unitysync.Async
 			//Now unlike the non task func we must wait for the new task to finish before we set its completion source
 			yield return new WaitForFuture(resultValue);
 
+			ThrowIfIsCanceledOrErrored(resultValue);
+
 			result.SetResult(resultValue.Result);
 		}
 
@@ -141,6 +173,8 @@ namespace Unitysync.Async
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
 
 			yield return new WaitForFuture(future);
+
+			ThrowIfIsCanceledOrErrored(future);
 
 			TResult resultValue;
 			try
@@ -164,6 +198,8 @@ namespace Unitysync.Async
 
 			yield return new WaitForFuture(future);
 
+			ThrowIfIsCanceledOrErrored(future);
+
 			Task<TResult> resultValue;
 			try
 			{
@@ -179,6 +215,8 @@ namespace Unitysync.Async
 			//Now unlike the non task func we must wait for the new task to finish before we set its completion source
 			yield return new WaitForFuture(resultValue);
 
+			ThrowIfIsCanceledOrErrored(resultValue);
+
 			result.SetResult(resultValue.Result);
 		}
 
@@ -188,6 +226,8 @@ namespace Unitysync.Async
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
 
 			yield return new WaitForFuture(future);
+
+			ThrowIfIsCanceledOrErrored(future);
 
 			TResult resultValue;
 			try
