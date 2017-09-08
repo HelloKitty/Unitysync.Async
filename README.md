@@ -24,7 +24,7 @@ You can even do a continuation into an async method which will of course return 
 
 ## Setup
 
-To compile or open TypeSafe.Http.Net project you'll first need a couple of things:
+To compile or open Unitysync.Async project you'll first need a couple of things:
 
 * Visual Studio 2017
 * Unity 2017.1 with .NET 4.6 enabled
