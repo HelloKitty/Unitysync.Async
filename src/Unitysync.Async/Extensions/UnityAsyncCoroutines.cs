@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Unitysync.Async
 {
-	public static class UnityAsyncCoroutines
+	internal static class UnityAsyncCoroutines
 	{
-		public static IEnumerator UnityAsyncCoroutine<T>(this Task<T> future, Action<T> continuation)
+		internal static IEnumerator UnityAsyncCoroutine<T>(this Task<T> future, Action<T> continuation)
 		{
 			if (future == null) throw new ArgumentNullException(nameof(future));
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
@@ -38,7 +38,7 @@ namespace Unitysync.Async
 
 		//You may wonder why this overload exists. It's for efficiency reasons so we don't need to wrap the a single continuation
 		//in a concated enumerable.
-		public static IEnumerator UnityAsyncCoroutine<T>(this Task<T> future, Action<T> continuation, IEnumerable<Action<T>> continuations)
+		internal static IEnumerator UnityAsyncCoroutine<T>(this Task<T> future, Action<T> continuation, IEnumerable<Action<T>> continuations)
 		{
 			if (future == null) throw new ArgumentNullException(nameof(future));
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
@@ -55,7 +55,7 @@ namespace Unitysync.Async
 			continuations.DispatchContinuations(future.Result);
 		}
 
-		public static IEnumerator UnityAsyncCoroutine(this Task future, Action continuation)
+		internal static IEnumerator UnityAsyncCoroutine(this Task future, Action continuation)
 		{
 			if (future == null) throw new ArgumentNullException(nameof(future));
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
@@ -68,7 +68,7 @@ namespace Unitysync.Async
 
 		//You may wonder why this overload exists. It's for efficiency reasons so we don't need to wrap the a single continuation
 		//in a concated enumerable.
-		public static IEnumerator UnityAsyncCoroutine(this Task future, Action continuation, IEnumerable<Action> continuations)
+		internal static IEnumerator UnityAsyncCoroutine(this Task future, Action continuation, IEnumerable<Action> continuations)
 		{
 			if (future == null) throw new ArgumentNullException(nameof(future));
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
@@ -85,7 +85,7 @@ namespace Unitysync.Async
 			continuations.DispatchContinuations();
 		}
 
-		public static IEnumerator UnityAsyncCoroutine<T, TResult>(this Task<T> future, Func<T, Task<TResult>> continuation, TaskCompletionSource<TResult> result)
+		internal static IEnumerator UnityAsyncCoroutine<T, TResult>(this Task<T> future, Func<T, Task<TResult>> continuation, TaskCompletionSource<TResult> result)
 		{
 			if (future == null) throw new ArgumentNullException(nameof(future));
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
@@ -114,7 +114,7 @@ namespace Unitysync.Async
 			result.SetResult(resultValue.Result);
 		}
 
-		public static IEnumerator UnityAsyncCoroutine<T, TResult>(this Task<T> future, Func<T, TResult> continuation, TaskCompletionSource<TResult> result)
+		internal static IEnumerator UnityAsyncCoroutine<T, TResult>(this Task<T> future, Func<T, TResult> continuation, TaskCompletionSource<TResult> result)
 		{
 			if (future == null) throw new ArgumentNullException(nameof(future));
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
@@ -138,7 +138,7 @@ namespace Unitysync.Async
 			result.SetResult(resultValue);
 		}
 
-		public static IEnumerator UnityAsyncCoroutine<T, TResult>(this Task<T> future, Func<Task<TResult>> continuation, TaskCompletionSource<TResult> result)
+		internal static IEnumerator UnityAsyncCoroutine<T, TResult>(this Task<T> future, Func<Task<TResult>> continuation, TaskCompletionSource<TResult> result)
 		{
 			if (future == null) throw new ArgumentNullException(nameof(future));
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
@@ -167,7 +167,7 @@ namespace Unitysync.Async
 			result.SetResult(resultValue.Result);
 		}
 
-		public static IEnumerator UnityAsyncCoroutine<T, TResult>(this Task<T> future, Func<TResult> continuation, TaskCompletionSource<TResult> result)
+		internal static IEnumerator UnityAsyncCoroutine<T, TResult>(this Task<T> future, Func<TResult> continuation, TaskCompletionSource<TResult> result)
 		{
 			if (future == null) throw new ArgumentNullException(nameof(future));
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
@@ -191,7 +191,7 @@ namespace Unitysync.Async
 			result.SetResult(resultValue);
 		}
 
-		public static IEnumerator UnityAsyncCoroutine<TResult>(this Task future, Func<Task<TResult>> continuation, TaskCompletionSource<TResult> result)
+		internal static IEnumerator UnityAsyncCoroutine<TResult>(this Task future, Func<Task<TResult>> continuation, TaskCompletionSource<TResult> result)
 		{
 			if (future == null) throw new ArgumentNullException(nameof(future));
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
@@ -220,7 +220,7 @@ namespace Unitysync.Async
 			result.SetResult(resultValue.Result);
 		}
 
-		public static IEnumerator UnityAsyncCoroutine<TResult>(this Task future, Func<TResult> continuation, TaskCompletionSource<TResult> result)
+		internal static IEnumerator UnityAsyncCoroutine<TResult>(this Task future, Func<TResult> continuation, TaskCompletionSource<TResult> result)
 		{
 			if (future == null) throw new ArgumentNullException(nameof(future));
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));

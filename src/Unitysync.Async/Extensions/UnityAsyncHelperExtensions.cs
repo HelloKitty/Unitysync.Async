@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Unitysync.Async
 {
-	public static class UnityAsyncHelperExtensions
+	internal static class UnityAsyncHelperExtensions
 	{
 		/// <summary>
 		/// Dispatches the provided <see cref="continuations"/> using the provided
@@ -13,7 +13,7 @@ namespace Unitysync.Async
 		/// <typeparam name="T">The Type of the value.</typeparam>
 		/// <param name="value">The value.</param>
 		/// <param name="continuations">The continuations to dispatch.</param>
-		public static void DispatchContinuations<T>(this IEnumerable<Action<T>> continuations, T value)
+		internal static void DispatchContinuations<T>(this IEnumerable<Action<T>> continuations, T value)
 		{
 			if (continuations == null) throw new ArgumentNullException(nameof(continuations));
 			if (value == null) throw new ArgumentNullException(nameof(value));
@@ -31,7 +31,7 @@ namespace Unitysync.Async
 		/// Dispatches the provided <see cref="continuations"/>.
 		/// </summary>
 		/// <param name="continuations">The continuations to dispatch.</param>
-		public static void DispatchContinuations(this IEnumerable<Action> continuations)
+		internal static void DispatchContinuations(this IEnumerable<Action> continuations)
 		{
 			if (continuations == null) throw new ArgumentNullException(nameof(continuations));
 
