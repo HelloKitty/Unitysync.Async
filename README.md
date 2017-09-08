@@ -21,6 +21,12 @@ Service.DoSomethingAsync(someData, someMoreData)
 You can schedule multiple continuations on a single Task but the order of their execution is currently undefined if you schedule multiple on the same task.
 
 You can even do a continuation into an async method which will of course return a Task<T> which can be continued on again, in a fluent method chaining pattern, and this execution order is defined since they are different tasks.
+	
+```csharp
+QueryClient.GetAvatarUrl(entityId) //async method that returns an endpoint
+		.UnityAsyncContinueWith(this, GetAvatar2DImage) //async method that queries the endpoint for the avatar image
+		.UnityAsyncContinueWith(this, InitializeAvatarMaterials); //non-async method that initializes the avatar materials
+```	
 
 ## Setup
 
