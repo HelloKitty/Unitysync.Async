@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Unitysync.Async
@@ -205,6 +206,33 @@ namespace Unitysync.Async
 
 			//See: https://msdn.microsoft.com/en-us/library/dd449174(v=vs.110).aspx
 			TaskCompletionSource<TResult> result = new TaskCompletionSource<TResult>();
+
+			//Start the coroutine that continues on the Task's completion.
+			behaviour.StartCoroutine(future.UnityAsyncCoroutine(continuation, result));
+
+			return result.Task;
+		}
+
+		/// <summary>
+		/// Creates a continuation for the specified <see cref="Task"/> that will
+		/// invoke the provided <see cref="continuation"/> when the <see cref="future"/> completes.
+		/// The method returns a future for the <see cref="continuation"/>'s return value.
+		/// </summary>
+		/// <typeparam name="T">The Task's TResult type.</typeparam>
+		/// <param name="future">The task.</param>
+		/// <param name="behaviour">The <see cref="MonoBehaviour"/> to schedule this continuation to run in.</param>
+		/// <param name="continuation">The continuation.</param>
+		/// <returns>A future that wraps the value of the <see cref="continuation"/>'s result.</returns>
+		public static Task UnityAsyncContinueWith<T>([NotNull] this Task<T> future, [NotNull] MonoBehaviour behaviour, [NotNull] Func<T, Task> continuation)
+		{
+			if(future == null) throw new ArgumentNullException(nameof(future));
+			if(behaviour == null) throw new ArgumentNullException(nameof(behaviour));
+			if(continuation == null) throw new ArgumentNullException(nameof(continuation));
+
+			//This task completion source returns itself as the non-generic Task and will complete with nonsense as the result value
+			//See: https://msdn.microsoft.com/en-us/library/dd449174(v=vs.110).aspx
+			//See for workaround: https://stackoverflow.com/a/11969723/4184238
+			TaskCompletionSource<object> result = new TaskCompletionSource<object>();
 
 			//Start the coroutine that continues on the Task's completion.
 			behaviour.StartCoroutine(future.UnityAsyncCoroutine(continuation, result));
