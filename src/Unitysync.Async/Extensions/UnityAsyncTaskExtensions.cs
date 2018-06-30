@@ -224,7 +224,7 @@ namespace Unitysync.Async
 		/// <param name="continuation">The continuation.</param>
 		/// <param name="throwIfTaskFailed">Indicates if the managed resulting future should have the exception thrown if it throws.</param>
 		/// <returns>A future that wraps the value of the <see cref="continuation"/>'s result.</returns>
-		public static Task UnityAsyncContinueWith<T>([NotNull] this Task<T> future, [NotNull] MonoBehaviour behaviour, [NotNull] Func<T, Task> continuation, bool throwIfTaskFailed = false)
+		public static Task UnityAsyncContinueWith<T>([NotNull] this Task<T> future, [NotNull] MonoBehaviour behaviour, [NotNull] Func<T, Task> continuation)
 		{
 			if(future == null) throw new ArgumentNullException(nameof(future));
 			if(behaviour == null) throw new ArgumentNullException(nameof(behaviour));

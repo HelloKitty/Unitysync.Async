@@ -157,11 +157,14 @@ namespace Unitysync.Async
 			catch(Exception e)
 			{
 				result.SetException(e);
-				yield break;
+
+				//Set the exception but don't break
+				//We want to wait for it to finish AND
+				//throw if it failed below.
 			}
 
 			//Result value should not be null here
-			yield return new WaitForFuture(future);
+			yield return new WaitForFuture(resultValue);
 
 			ThrowIfIsCanceledOrErrored(resultValue);
 
