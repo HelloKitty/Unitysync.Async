@@ -114,7 +114,7 @@ namespace Unitysync.Async
 			result.SetResult(resultValue.Result);
 		}
 
-		internal static IEnumerator UnityAsyncCoroutine<T, TResult>(this Task<T> future, Func<T, TResult> continuation, TaskCompletionSource<TResult> result, bool throwIfTaskFailed = false)
+		internal static IEnumerator UnityAsyncCoroutine<T, TResult>(this Task<T> future, Func<T, TResult> continuation, TaskCompletionSource<TResult> result)
 		{
 			if (future == null) throw new ArgumentNullException(nameof(future));
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
@@ -123,7 +123,7 @@ namespace Unitysync.Async
 
 			ThrowIfIsCanceledOrErrored(future);
 
-			TResult resultValue = default(TResult);
+			TResult resultValue;
 			try
 			{
 				//Result will throw if we encounted exceptions but it will be aggregate exception
@@ -133,15 +133,39 @@ namespace Unitysync.Async
 			{
 				result.SetException(e);
 
-				if(!throwIfTaskFailed)
-					yield break;
-				else
-					throw;
+				yield break;
 			}
-			finally
+
+			result.SetResult(resultValue);
+		}
+
+		internal static IEnumerator UnityAsyncCoroutine<T>(this Task<T> future, Func<T, Task> continuation, TaskCompletionSource<object> result)
+		{
+			if(future == null) throw new ArgumentNullException(nameof(future));
+			if(continuation == null) throw new ArgumentNullException(nameof(continuation));
+
+			yield return new WaitForFuture(future);
+
+			ThrowIfIsCanceledOrErrored(future);
+
+			Task resultValue = null;
+			try
 			{
-				result.SetResult(resultValue);
+				//Result will throw if we encounted exceptions but it will be aggregate exception
+				resultValue = continuation(future.Result);
 			}
+			catch(Exception e)
+			{
+				result.SetException(e);
+				yield break;
+			}
+
+			//Result value should not be null here
+			yield return new WaitForFuture(future);
+
+			ThrowIfIsCanceledOrErrored(resultValue);
+
+			result.SetResult(null);
 		}
 
 		internal static IEnumerator UnityAsyncCoroutine<T, TResult>(this Task<T> future, Func<Task<TResult>> continuation, TaskCompletionSource<TResult> result)

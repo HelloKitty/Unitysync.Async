@@ -236,7 +236,7 @@ namespace Unitysync.Async
 			TaskCompletionSource<object> result = new TaskCompletionSource<object>();
 
 			//Start the coroutine that continues on the Task's completion.
-			behaviour.StartCoroutine(future.UnityAsyncCoroutine(continuation, result, throwIfTaskFailed));
+			behaviour.StartCoroutine(future.UnityAsyncCoroutine(continuation, result));
 
 			return result.Task;
 		}
