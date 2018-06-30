@@ -114,7 +114,7 @@ namespace Unitysync.Async
 			result.SetResult(resultValue.Result);
 		}
 
-		internal static IEnumerator UnityAsyncCoroutine<T, TResult>(this Task<T> future, Func<T, TResult> continuation, TaskCompletionSource<TResult> result)
+		internal static IEnumerator UnityAsyncCoroutine<T, TResult>(this Task<T> future, Func<T, TResult> continuation, TaskCompletionSource<TResult> result, bool throwIfTaskFailed = false)
 		{
 			if (future == null) throw new ArgumentNullException(nameof(future));
 			if (continuation == null) throw new ArgumentNullException(nameof(continuation));
@@ -123,19 +123,25 @@ namespace Unitysync.Async
 
 			ThrowIfIsCanceledOrErrored(future);
 
-			TResult resultValue;
+			TResult resultValue = default(TResult);
 			try
 			{
 				//Result will throw if we encounted exceptions but it will be aggregate exception
 				resultValue = continuation(future.Result);
 			}
-			catch (Exception e)
+			catch(Exception e)
 			{
 				result.SetException(e);
-				yield break;
-			}
 
-			result.SetResult(resultValue);
+				if(!throwIfTaskFailed)
+					yield break;
+				else
+					throw;
+			}
+			finally
+			{
+				result.SetResult(resultValue);
+			}
 		}
 
 		internal static IEnumerator UnityAsyncCoroutine<T, TResult>(this Task<T> future, Func<Task<TResult>> continuation, TaskCompletionSource<TResult> result)

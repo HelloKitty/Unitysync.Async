@@ -222,8 +222,9 @@ namespace Unitysync.Async
 		/// <param name="future">The task.</param>
 		/// <param name="behaviour">The <see cref="MonoBehaviour"/> to schedule this continuation to run in.</param>
 		/// <param name="continuation">The continuation.</param>
+		/// <param name="throwIfTaskFailed">Indicates if the managed resulting future should have the exception thrown if it throws.</param>
 		/// <returns>A future that wraps the value of the <see cref="continuation"/>'s result.</returns>
-		public static Task UnityAsyncContinueWith<T>([NotNull] this Task<T> future, [NotNull] MonoBehaviour behaviour, [NotNull] Func<T, Task> continuation)
+		public static Task UnityAsyncContinueWith<T>([NotNull] this Task<T> future, [NotNull] MonoBehaviour behaviour, [NotNull] Func<T, Task> continuation, bool throwIfTaskFailed = false)
 		{
 			if(future == null) throw new ArgumentNullException(nameof(future));
 			if(behaviour == null) throw new ArgumentNullException(nameof(behaviour));
@@ -235,7 +236,7 @@ namespace Unitysync.Async
 			TaskCompletionSource<object> result = new TaskCompletionSource<object>();
 
 			//Start the coroutine that continues on the Task's completion.
-			behaviour.StartCoroutine(future.UnityAsyncCoroutine(continuation, result));
+			behaviour.StartCoroutine(future.UnityAsyncCoroutine(continuation, result, throwIfTaskFailed));
 
 			return result.Task;
 		}
