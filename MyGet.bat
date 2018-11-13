@@ -1,2 +1,3 @@
-%NUGET% restore Unisync.Async.sln -NoCache -NonInteractive
-msbuild Unisync.Async.sln /p:Configuration=Release
+dotnet restore Unisync.Async.sln
+dotnet build Unisync.Async.sln -c Release
+PAUSE
