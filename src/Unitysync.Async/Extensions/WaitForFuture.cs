@@ -10,7 +10,7 @@ namespace Unitysync.Async
 	/// <summary>
 	/// Waits for the provided <see cref="IAsyncResult"/> to be completed.
 	/// </summary>
-	internal sealed class WaitForFuture : IEnumerator
+	public sealed class WaitForFuture : IEnumerator
 	{
 		/// <summary>
 		/// The async result being tracked.
